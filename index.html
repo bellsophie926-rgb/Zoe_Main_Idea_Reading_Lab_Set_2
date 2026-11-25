@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zoe · Main Idea Reading Lab · Set 2</title>
+  <style>
+    :root{--ink:#193047;--muted:#607487;--paper:#fffdf8;--bg:#edf3f6;--line:#d8e2e8;--blue:#184e71;--pale:#e9f4f7;--green:#14795d;--red:#aa513b;--gold:#efbb62}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+    button,select,textarea,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}
+    .top{padding:20px clamp(16px,3vw,42px);background:#17384e;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .brand{font:700 1.35rem/1.2 Georgia,serif;letter-spacing:.01em}.sub{font-size:.85rem;color:#cbdbe5;margin-top:4px}
+    .nav{display:flex;gap:8px;flex-wrap:wrap}.nav button{border:1px solid #7c9cb1;background:transparent;color:#fff;padding:8px 13px;border-radius:100px}.nav button.active{background:#fff;color:#17384e}
+    .intro{max-width:1250px;margin:18px auto 0;padding:0 18px;color:#425c70;font-size:.93rem}
+    .intro strong{color:#123c57}.layout{max-width:1450px;margin:15px auto 50px;padding:0 18px;display:grid;grid-template-columns:minmax(0,1.22fr) minmax(360px,.78fr);gap:18px;align-items:start}
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 26px #1b45610b;overflow:hidden}.panelhead{padding:20px 24px 14px;border-bottom:1px solid var(--line)}
+    .eyebrow{font-weight:700;color:#326b87;text-transform:uppercase;letter-spacing:.12em;font-size:.72rem}.panel h1,.panel h2{margin:4px 0 5px;line-height:1.24}.panel h1{font:700 clamp(1.5rem,2.2vw,2.15rem) Georgia,serif}.panel h2{font-size:1.22rem}.metadata{font-size:.84rem;color:var(--muted)}
+    .article{padding:19px 26px 27px;font:17px/1.79 Georgia,"Times New Roman",serif}.article p{margin:0 0 17px}.num{font:700 .77rem/1.7 system-ui,sans-serif;color:#4386a1;display:inline-block;min-width:38px;vertical-align:2px}.article.locked{min-height:420px;display:grid;place-items:center;color:var(--muted);font:1rem/1.6 system-ui,sans-serif;text-align:center;padding:45px}
+    .work{padding:19px 22px 24px}.timer{display:flex;justify-content:space-between;align-items:center;background:#eff6f7;border-radius:12px;padding:11px 14px;margin-bottom:18px;font-variant-numeric:tabular-nums}.timer strong{font-size:1.1rem}.hint{font-size:.86rem;color:var(--muted)}
+    .start{width:100%;border:0;border-radius:10px;background:var(--blue);color:#fff;padding:12px 18px;font-weight:700}.start:hover,.submit:hover{filter:brightness(1.1)}
+    .question{font:700 1.12rem/1.45 Georgia,serif;margin:12px 0 14px}.options{display:grid;gap:9px;margin-bottom:17px}.option{display:flex;align-items:flex-start;gap:10px;border:1px solid #cbdce5;border-radius:10px;padding:11px 12px;line-height:1.45;cursor:pointer}.option:has(input:checked){border-color:#286788;background:#eaf4f7}.option input{margin-top:4px;accent-color:#195b7c}.letter{font-weight:800;color:#276885;min-width:18px}
+    .field{margin:18px 0}.field label,.field .fieldtitle{display:block;font-weight:700;margin-bottom:5px}.field textarea,.field select,.portal input{display:block;width:100%;border:1px solid #bacbd5;border-radius:9px;padding:9px 11px;background:#fff;color:var(--ink)}.field textarea{min-height:70px;resize:vertical}.field small{display:block;color:var(--muted);margin-top:5px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two .field{margin:8px 0}
+    .submit{width:100%;margin-top:12px;background:#174f71;color:#fff;border:0;border-radius:10px;padding:12px;font-weight:700}.error{color:var(--red);font-size:.9rem;min-height:22px;margin-top:6px}
+    .feedback{border-top:1px solid var(--line);padding:18px 22px 25px;background:#fbfdfb}.verdict{font-weight:800;font-size:1.13rem}.good{color:var(--green)}.bad{color:var(--red)}.feedback h3{font-size:.94rem;margin:18px 0 7px}.feedback p{margin:8px 0}.feedback ul{padding-left:20px;margin:8px 0}.feedback li{margin:8px 0}.codebox{background:#e9f3ef;border:1px solid #bbd8ca;border-radius:12px;padding:14px;margin:16px 0}.code{font:700 1.65rem/1.1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.12em;color:#154f48;overflow-wrap:anywhere}.copy{padding:5px 10px;border:1px solid #aacbc0;background:#fff;border-radius:7px;margin-top:9px}.method{border-left:3px solid var(--gold);padding-left:12px;color:#445a69}
+    .portal{max-width:980px;margin:18px auto 50px;padding:25px}.portal h1{font:700 1.9rem Georgia,serif}.portal .row{display:flex;gap:9px}.portal .row input{flex:1;text-transform:uppercase;letter-spacing:.1em;font-family:monospace}.portal .row button{border:0;background:var(--blue);color:white;border-radius:8px;padding:8px 17px}.report{margin-top:22px;border-top:1px solid var(--line);padding-top:14px}.report dl{display:grid;grid-template-columns:175px 1fr;gap:7px 15px}.report dt{font-weight:700;color:#526a79}.report dd{margin:0}.local{background:#f1f6f8;border-radius:9px;padding:12px;margin-top:14px}.smallprint{color:var(--muted);font-size:.85rem}.hidden{display:none!important}
+    #readingPanel{overflow:visible;min-width:0}
+    .annotation-tools{position:sticky;top:0;z-index:4;padding:10px 14px 8px;border-bottom:1px solid var(--line);background:#f1f7fa}
+    .tool-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+    .tool-row button,.note-actions button{border:1px solid #bdcfd9;background:#fff;color:#174560;border-radius:7px;padding:5px 8px;font-size:.82rem;line-height:1.4}
+    .tool-row button[aria-pressed="true"]{background:#184e71;color:#fff;border-color:#184e71;font-weight:700}
+    .tool-row button:focus-visible,.note-actions button:focus-visible{outline:2px solid #1a6d9d;outline-offset:2px}
+    #toolHint{color:#445f73;font-size:.78rem;margin:6px 0 0;line-height:1.35}
+    .article{position:relative}
+    .article[data-tool]:not([data-tool="read"]){touch-action:none;-webkit-user-select:none;user-select:none;cursor:crosshair}
+    .article[data-tool="erase"]{cursor:cell}
+    .word.is-highlighted,.word.preview-highlight{background:#ffe780;border-radius:2px}
+    .word.is-noted,.word.preview-note{text-decoration:underline dotted #186087 2px;text-underline-offset:.2em}
+    .article[data-tool="read"] .word.is-noted{cursor:pointer}
+    .ink-layer{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:hidden}
+    .ink-stroke{fill:none;stroke:#2456bb;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+    .note-list{border-top:1px solid var(--line);padding:12px 20px 18px;font-size:.9rem}
+    .note-list h2{font-size:1rem}.note-list ul{margin:.4rem 0 0;padding:0;list-style:none}
+    .note-list button{display:block;width:100%;text-align:left;overflow-wrap:anywhere;color:var(--ink);border:1px solid var(--line);background:#f4f8fa;border-radius:8px;padding:8px 11px;margin:6px 0}
+    #noteDialog{color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:15px;width:min(440px,calc(100% - 28px));padding:18px 20px}
+    #noteDialog::backdrop{background:#142c4082}
+    #noteDialog h2{margin:0;font-size:1.15rem}#noteExcerpt{color:var(--muted);font:1rem/1.4 Georgia,serif;margin:8px 0 13px}
+    #noteText{display:block;width:100%;min-height:80px;resize:vertical;border:1px solid #9db5c3;border-radius:8px;padding:8px}
+    .note-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+    .note-actions [type="submit"]{background:#184e71;color:#fff}
+    @media(max-width:870px){.layout{grid-template-columns:1fr}.article{font-size:16.5px}.article.locked{min-height:100px;padding:18px}.portal{margin-left:12px;margin-right:12px}.portal .row{flex-wrap:wrap}.portal .row button{width:100%}}
+    @media(max-width:540px){.two{grid-template-columns:1fr}.panelhead,.article,.work,.feedback{padding-left:17px;padding-right:17px}.report dl{grid-template-columns:1fr;gap:0}.report dd{margin-bottom:11px}}
+    @media print{.top,.intro,.work,.feedback,.portal,.annotation-tools,.note-list,#noteDialog,.ink-layer{display:none!important}.layout{display:block}.panel{box-shadow:none;border:0}.article.locked{display:none}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div><div class="brand">Zoe · Main Idea Reading Lab · Set 2</div><div class="sub">三篇原创迁移练习 · 参照高考 C/D 篇 · 每篇一道篇章题</div></div>
+    <nav class="nav" aria-label="篇章导航"><button type="button" data-go="0">Passage 1</button><button type="button" data-go="1">Passage 2</button><button type="button" data-go="2">Passage 3</button><button type="button" data-go="teacher">Teacher portal</button></nav>
+  </header>
+  <div class="intro" id="intro"><strong>学生指令：</strong>每篇建议用时 7–9 分钟。开始后直接看文章和选项；选出答案，再记录你最犹豫的另一个选项。可用左侧标注工具，无需写概括或段落标签。提交后查看解析，把十字母代码发给老师。</div>
+  <main class="layout" id="studentView">
+    <section class="panel" id="readingPanel" aria-label="阅读文章">
+      <div class="panelhead"><h1 id="articleTitle"></h1><div class="metadata" id="articleMeta"></div></div>
+      <div class="annotation-tools hidden" id="annotationTools">
+        <div class="tool-row" role="group" aria-label="阅读标注工具">
+          <button type="button" data-tool="read" aria-pressed="true">阅读</button>
+          <button type="button" data-tool="pen" aria-pressed="false"><span aria-hidden="true">✎ </span>画笔</button>
+          <button type="button" data-tool="highlight" aria-pressed="false">荧光笔</button>
+          <button type="button" data-tool="note" aria-pressed="false">批注</button>
+          <button type="button" data-tool="erase" aria-pressed="false">橡皮</button>
+          <button type="button" id="undoAnnotation" disabled>撤销</button>
+          <button type="button" id="clearAnnotations" disabled>清空</button>
+        </div>
+        <p id="toolHint" role="status"></p>
+      </div>
+      <div class="article locked" id="article"><p>点击「开始阅读」，同时显示文章和题目。</p></div>
+      <section class="note-list hidden" id="noteList" aria-label="本篇批注"></section>
+    </section>
+    <section class="panel" aria-label="答题区"><div class="panelhead"><div class="eyebrow" id="practiceNo"></div><h2>Read → Decide → Check</h2><div class="metadata">题目只考全文中心，不做逐段标签。</div></div><div class="work">
+      <div class="timer"><span>本次独立阅读与作答</span><strong id="clock">00:00</strong></div>
+      <button class="start" id="startBtn" type="button">开始阅读与计时</button>
+      <div id="answerArea" class="hidden">
+        <div class="question" id="question" lang="en"></div><div class="options" id="options" lang="en"></div>
+        <div class="two"><div class="field"><label for="runner">最像答案的另一个选项</label><select id="runner"><option value="">请选择</option></select></div><div class="field"><label for="reason">排除它的主要原因</label><select id="reason"><option value="">请选择</option><option value="1">过窄：只覆盖局部</option><option value="2">过宽：主题范围扩大</option><option value="3">说过头：超出证据</option><option value="4">只讲背景／方法</option><option value="5">与原文不符</option><option value="6">其他／尚不确定</option><option value="7">重心偏移：讲的是另一个问题</option></select></div></div>
+        <div class="two"><div class="field"><label for="evidence">哪段最帮助你定夺？</label><select id="evidence"><option value="">请选择</option><option value="1">[1]</option><option value="2">[2]</option><option value="3">[3]</option><option value="4">[4]</option><option value="5">[5]</option></select></div><div class="field"><label for="confidence">确定程度</label><select id="confidence"><option value="">请选择</option><option value="1">不确定</option><option value="2">基本确定</option><option value="3">很确定</option></select></div></div>
+        <button class="submit" id="submitBtn" type="button">提交本篇，查看反馈</button><div class="error" id="formError" role="alert"></div>
+      </div></div><div class="feedback hidden" id="feedback" aria-live="polite"></div></section>
+  </main>
+  <section class="panel portal hidden" id="portal" aria-label="教师查看"><div class="eyebrow">Teacher portal</div><h1>输入 Zoe 发来的十字母代码</h1><p>代码可在另一台设备查看本题组的选项、正误、用时、最接近的干扰项、排除理由、证据段和信心。此处仅查 Set 2 代码；旧题组请打开旧文件查看。无需联网。</p><div class="row"><input id="codeInput" aria-label="十字母代码" maxlength="10" autocomplete="off" spellcheck="false" placeholder="输入十个英文字母"><button id="lookupBtn" type="button">查看记录</button></div><div class="error" id="lookupError" role="alert"></div><div id="report" class="report hidden"></div><p class="smallprint">标注留在学生浏览器，不随代码发送。代码不用于身份验证。</p></section>
+  <dialog id="noteDialog" aria-labelledby="noteHeading">
+    <form id="noteForm">
+      <h2 id="noteHeading">文字批注</h2>
+      <p id="noteExcerpt"></p>
+      <label for="noteText" class="smallprint">写在选中的文字旁（不计分）</label>
+      <textarea id="noteText" maxlength="200" required></textarea>
+      <div class="note-actions"><button type="button" id="cancelNote">取消</button><button type="submit">保存批注</button></div>
+    </form>
+  </dialog>
+  <script>
+  'use strict';
+  // Original practice texts; no externally sourced or exam-authentic passages.
+  const papers = [
+    {
+      "target": "约 380 词 · 建议 7–9 分钟",
+      "paragraphs": [
+        "The first delivery of local carrots reached three school kitchens on the same Tuesday. They were smaller and less uniform than the ones usually supplied in large bags, and they took longer to prepare. One cook showed me a tray that still held a good deal of soil. For the first few weeks of the district’s new purchasing scheme, the additional work of washing and sorting seemed the most obvious obstacle to ordering more from nearby farms.",
+        "By October the growers had begun washing the vegetables themselves. They also agreed to share a weekly forecast and divide the deliveries between the kitchens, so that a school did not have to take an entire load just because that was the quantity one farm could supply. The new arrangement saved the cooks some work. It did not, however, give the growers any more control over how much would be ready on a particular day.",
+        "The kitchens issued their menus three weeks ahead. Families needed a reliable list of ingredients, and the cooks needed to know which dishes to allow time for. When one week’s supply of green beans fell short, a farmer had plenty of cabbage to offer in its place. Accepting it would still have met the district’s commitment to buying locally, but the meal would no longer have matched the description families had received. There was little to be gained, at that point, from knowing about the shortage a day earlier.",
+        "The next menu described that meal as rice with greens. It did not leave the choice entirely to the cook: both versions had been approved in advance, and families could see the ingredients for each. A substitution outside those versions still had to be checked. The farms continued to send the same sort of figures they had sent in October. The figures that had previously signalled a problem could now be used to select one of two meals the school was already prepared to serve.",
+        "On the last Tuesday of the term, the grower who had brought in the carrots called about another shortage. The head cook checked the two lists, chose the crop that was available and wrote its name above the serving counter. She did not ask the farmer to be any more certain about the following Tuesday."
+      ],
+      "question": "What is the passage mainly about?",
+      "choices": [
+        "How local farms made their supplies more predictable for school kitchens.",
+        "Why school kitchens had to change how they prepared local produce.",
+        "How advance harvest reports helped schools keep to their original menus.",
+        "How schools made their meal plans accommodate variation in local harvests."
+      ],
+      "answer": 3,
+      "core": "附近农场的供应量仍会变化；真正的转变发生在学校一侧：菜单提前批准并告知家长可接受的不同版本，让厨房能在约束下按实际收成选用食材。",
+      "explain": [
+        "A｜[2] 的周报确实让学校能提前估计来货，却不能让农场更能控制实际的收成。这一项只概括供货方怎么做；[3]–[5] 转向学校怎么改菜单，让有波动的供应也能用上。",
+        "B｜[1] 的清洗、分拣难题确实存在，[2] 开头也有应对。它是引入项目的具体困难，不是贯穿 [3]–[5] 的那个问题：在已对家长公布菜单的情况下，厨房怎样处理供应变化。",
+        "C｜[2] 提前报告是有用的，但 [3] 明说早一天知道也解决不了已公布的菜单。[4] 收到的仍是同类数据，有变化的是厨房可以怎样使用它。选项把已有工具当成了决定性的改变。",
+        "D｜最佳。[3] 要兼顾本地采购和已经公布的用餐安排；[4] 提前批准两个可用版本，让实际供应决定选哪个；[5] 以再次短缺时的处理结果收束。对象是学校的菜单安排，不是农场的种植或送货。"
+      ],
+      "compare": "D vs C：两项都在说学校如何应对短缺。对照 [3] 的 ‘a day earlier’ 和 [4] 的 ‘the same sort of figures’：信息并没有变得更及时或更可靠，变的是学校收到信息后有哪些合规选择。",
+      "method": "圈出两个可能的对象，再问：结尾时，谁的哪项做法变了？谁的条件依然存在？用中段的对照核对，别让首段最显眼的对象代替主线。",
+      "language": [
+        "meet a commitment 在 [3] 是「履行承诺」。接受卷心菜可以履行本地采购承诺，却仍可能与家长已收到的菜单冲突；两个要求不是同一件事。",
+        "accommodate variation 指「把波动容纳到安排之内」，不等于 remove variation（消除波动）。[5] 的再次短缺正好区分这两层意思。"
+      ],
+      "teacherPrompt": "让她分别指出 [2] 农户改了什么、[4] 学校改了什么，再问：第 [5] 段哪一方的限制还在？若她又说成是农场使供应更稳定，请她回读 [2] 最后一整句。"
+    },
+    {
+      "target": "约 350 词 · 建议 7–9 分钟",
+      "paragraphs": [
+        "Visitors to a public arts centre could follow recorded directions from the entrance to the smaller galleries without once consulting a map. But the route was of little use when a connecting door was closed, even to some people who had walked it that morning. A design team arranged a trial in the building to see what people took away from a set of instructions once they no longer needed to follow it.",
+        "First-time visitors were assigned at random to one of two versions of the same guided walk. At junctions both versions named a visible object and gave exactly the same directions. The extra sentence in one version drew attention to how that object looked: ‘The blue doors have long metal handles.’ In the other version the sentence placed it in relation to its surroundings: ‘The blue doors face the courtyard.’ No one was shown a complete floor plan.",
+        "Immediately afterwards, visitors from the two groups were about equally good at recognising photographs of places along the walk and recalling the order of the turns. Another task started in a room just off the original route. Visitors had to point towards two places they had passed but could not now see. With that change of starting point, the group that had heard about the positions of the objects was more accurate.",
+        "The difference might have owed something to how long people spent looking around; a description of where the doors faced could have prompted someone to glance into the courtyard. In a second trial, both groups were given the same pauses at the junctions and were asked to look around before moving on. The difference in the pointing task remained, even though everyone now had the same opportunity to look around.",
+        "The team has yet to find out how long the difference lasts, or whether the same instructions would be helpful on a crowded city street. For the next trial at the centre, it kept the directions themselves as they were. The change it proposed was to the sentence a person would hear while standing in front of the blue doors."
+      ],
+      "question": "Which of the following is the best title for the passage?",
+      "choices": [
+        "Learning the Turns: How Navigation Prompts Improve Recall of Routes",
+        "Beyond the Turn: How Navigation Prompts Help Walkers Learn a Layout",
+        "Naming the Landmarks: How Guides Make Places Easier to Recognise",
+        "Making Time to Look: How Pauses Help Walkers Understand a Layout"
+      ],
+      "answer": 1,
+      "core": "两组都得到完整指路指令、也都注意到地标。差异在于提示是否说清地标之间的空间位置：说清位置的提示在改变起点、需要判断看不见的地点方向时更有帮助。",
+      "explain": [
+        "A｜[1] 确实引入了跟着指令走路；[3] 也测了转弯顺序。但两组回忆转弯顺序相近，标题把已有路线的记忆当成了关键发现。",
+        "B｜最佳。[2] 对照的是地标外观信息与相对位置信息；[3] 的差异出现在离开原路线后判断方向，而不是认照片或回忆转弯；[4] 进一步核对了观察时间这个解释。[5] 没有推广到所有场所。",
+        "C｜两套指令都说出了地标，[3] 中照片辨认的表现也相近。原文解释的是人能不能把已见地点的相对位置组织起来，不是能不能认出它们。",
+        "D｜[4] 确实考虑了停下观察的作用，所以不是凭空编造。但让两组都停下来观察后，差异还在；停顿是检验另一种解释的安排，不是研究主要发现。"
+      ],
+      "compare": "B vs A：‘还记得在哪里转弯’和‘换个起点还能指出地点方向’是两种表现。[3] 特意先说前者相近，再说后者不同，标题应当解释出现差异的那项结果。",
+      "method": "标题有两个都像时，先分开「两组表现相近的任务」与「两组表现有差异的任务」，再检验标题概括的是哪一种。",
+      "language": [
+        "in relation to its surroundings 指的是物体与周围环境的相对位置，不等于对同一地标加更多外观描写。两组指路信息相同，附加提示不同。",
+        "might have owed something to 在 [4] 引出一个待检验的解释，意思是「可能部分归因于」。后面的 remained 表明在两组都能停下观察时，差异依旧出现。"
+      ],
+      "teacherPrompt": "请她用 [3] 分别说出哪两项差不多、哪一项有差异，再用 [4] 说明为什么不能只用「给了一组更多观察时间」来解释这种差异。答对也请她指出这两个层次。"
+    },
+    {
+      "target": "约 405 词 · 建议 7–9 分钟",
+      "paragraphs": [
+        "In March the printed programme for the Hill Street festival was still blank. The organisers had booked a courtyard and asked residents whether the performances should be held on Saturday or Sunday. At the public meeting, volunteers read out letters from people who could not attend. The record distinguished between comments made in the room and those received in writing, but a vote carried the same weight either way. Saturday was preferred by a clear majority.",
+        "A week later, the council announced that repairs to the square would move its regular Saturday market into the courtyard until late afternoon. The organisers could keep the preferred day by putting the workshops indoors and moving the music from the afternoon to the evening, by which time the courtyard would be clear. The published notice began with the words ‘In line with the public’s preference’. That was a fair account of the choice of day. The rest of the notice described an arrangement no one at the meeting had seen.",
+        "One of the first replies came from a resident whose letter had been read out in March. She did not withdraw her preference for Saturday. She wanted to know why the main performance was now scheduled for the hours when people in the surrounding flats would normally have their windows open. In the original proposal, the courtyard had been set aside for music at a time when many of those residents were out. Her earlier letter was still on file, accurately summarised. It could not tell the organisers what she thought of the later arrangements.",
+        "The date was by then fixed, but not the running order. Before sending the programme to print, the organisers put both versions on the table and invited people to identify provisions they would like reconsidered. Several of the people who asked for an earlier finish had supported Saturday in March. The eventual plan moved one performance indoors and shortened the evening session. It did not reconcile everyone’s preferences, and it did not require a fresh vote on the date.",
+        "The following spring I saw the first planning sheet for the new festival. The two boxes for choosing a day were still there. Beside ‘programme to printer’, a date had been crossed out and replaced with one a week later. The blank line above it now read ‘Public meeting: draft programme’. There had been room for a line like that the year before."
+      ],
+      "question": "What is the author’s main purpose in writing the passage?",
+      "choices": [
+        "To show how weighing competing preferences leads to an acceptable festival plan.",
+        "To argue that organisers should explain practical limits before asking for preferences.",
+        "To argue that consultation should continue when a proposal changes in substance.",
+        "To argue for giving written and spoken responses equal weight in consultation."
+      ],
+      "answer": 2,
+      "core": "作者借节庆日程的变化说明：公众对原方案中某一点的同意，并不会自动延伸到实质改变后的安排。可以保留已经定下的日期，同时让人有机会回应后来新增或改变的事项。",
+      "explain": [
+        "A｜[4] 确实写到了折中安排，A 能概括这次节庆怎样改，却解释不了 [2]–[3] 为什么已经征询过意见的方案还要再讨论，也不能说明 [5] 为什么要给下一年的改版方案预留回应时间。",
+        "B｜说明限制是合理的，[4] 也明确把已定日期与仍可调整的事分开。但关键限制在第一次征询后才浮现，[3] 发生的问题不是最初没把限制讲清楚，而是把之前的同意用到后来不同的安排上。",
+        "C｜最佳。[2] 周六没变，演出时段却变了；[3] 这位居民依然支持周六，但对新时段有不同意见；[4] 只重开受影响的安排；[5] 为下一年的修订提案留出反馈窗口。四处证据共同指向这项写作意图。",
+        "D｜[1] 确实说明书面和现场投票权重相同，所以它是合理的局部概括。但 [3] 的居民不是因为写信没被听见：信已被读出并准确记录，新问题在她投票时尚不存在。后面解决的是何时再征询，而不是哪种方式更有分量。"
+      ],
+      "compare": "C vs D：不要只看 [1] 哪种意见受到尊重。把 [3]「她没有改投周日」和 [4]「不重投日期、但可改演出安排」放在一起，便看出作者关心的是征询所针对的方案是否已经实质改变。",
+      "method": "目的题最后二选一时，问：如果这个选项才是全文目的，后段的关键决定还需要出现吗？哪个选项能解释为什么有些决定不重开，而另一些需要重议？",
+      "language": [
+        "in line with the public’s preference 在 [2] 只对应 choice of day。不能把对周六的同意顺手扩成对整个新节目单的同意。",
+        "changes in substance 指方案内容有实质变化，具体是表演时段和对居民的影响变了，即使名义上的日期不变。not the running order 也限定了 [4] 中真正仍可调整的内容。"
+      ],
+      "teacherPrompt": "复盘先暂不提正确项：问「第一次大家同意了什么？什么后来才出现？第二次又决定了什么？」让她用 [3]＋[4] 对照后再解释为什么 [1] 的书面与口头同权只是条件，而不是作者目的。"
+    }
+  ];
+
+  const $ = selector => document.querySelector(selector);
+  const labels = ['A','B','C','D'];
+  const reasonLabels = ['未填','过窄：只覆盖局部','过宽：主题范围扩大','说过头：超出证据','只讲背景／方法','与原文不符','其他／尚不确定','重心偏移：讲的是另一个问题'];
+  const confidenceLabels = ['未填','不确定','基本确定','很确定'];
+  const edition = 4;
+  let current = 0;
+  let startedAt = null;
+  let tick = null;
+  let submitted = false;
+
+  function el(tag, klass, value) {
+    const node = document.createElement(tag);
+    if (klass) node.className = klass;
+    if (value !== undefined) node.textContent = value;
+    return node;
+  }
+
+  function seconds() {
+    return startedAt === null ? 0 : Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
+  }
+
+  function formatTime(n) {
+    return String(Math.floor(n / 60)).padStart(2,'0') + ':' + String(n % 60).padStart(2,'0');
+  }
+
+  function updateClock() {
+    $('#clock').textContent = formatTime(seconds());
+  }
+
+  function activateNav(key) {
+    document.querySelectorAll('.nav button').forEach(button => {
+      const active = button.dataset.go === String(key);
+      button.classList.toggle('active', active);
+      if (active) button.setAttribute('aria-current', 'page');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  function render(i) {
+    current = i;
+    clearInterval(tick);
+    tick = null;
+    startedAt = null;
+    submitted = false;
+    $('#clock').textContent = '00:00';
+    $('#studentView').classList.remove('hidden');
+    $('#intro').classList.remove('hidden');
+    $('#portal').classList.add('hidden');
+    $('#answerArea').classList.add('hidden');
+    $('#feedback').classList.add('hidden');
+    $('#feedback').replaceChildren();
+    $('#startBtn').classList.remove('hidden');
+    $('#submitBtn').disabled = false;
+    $('#answerArea').querySelectorAll('input,select').forEach(input => { input.disabled = false; });
+    $('#formError').textContent = '';
+    $('#reason').value = '';
+    $('#confidence').value = '';
+    const p = papers[i];
+    $('#articleTitle').textContent = 'Passage ' + (i + 1);
+    $('#articleMeta').textContent = p.target;
+    $('#practiceNo').textContent = 'Passage ' + (i + 1) + ' / 3';
+    $('#question').textContent = p.question;
+    $('#options').replaceChildren();
+    $('#runner').replaceChildren(new Option('请选择', ''));
+    $('#evidence').replaceChildren(new Option('请选择', ''));
+    p.paragraphs.forEach((_, j) => $('#evidence').add(new Option('[' + (j + 1) + ']', j + 1)));
+    p.choices.forEach((choice, j) => {
+      const label = el('label', 'option');
+      const input = el('input');
+      input.type = 'radio';
+      input.name = 'answer';
+      input.value = j;
+      label.append(input, el('span','letter',labels[j]+'.'), el('span',null,choice));
+      $('#options').append(label);
+      $('#runner').add(new Option(labels[j]+'. '+choice, j));
+    });
+    annotation.reset();
+    activateNav(i);
+    window.scrollTo(0,0);
+  }
+
+  function start() {
+    if (startedAt !== null) return;
+    startedAt = Date.now();
+    $('#answerArea').classList.remove('hidden');
+    $('#startBtn').classList.add('hidden');
+    annotation.openPassage(papers[current]);
+    tick = setInterval(updateClock, 1000);
+    updateClock();
+    if (window.matchMedia('(max-width: 870px)').matches) {
+      $('#readingPanel').scrollIntoView({block:'start'});
+    }
+  }
+
+  // 42 data bits + 5 checksum bits fit within ten base-26 letters.
+  const schema = [['version',3],['paper',2],['answer',2],['runner',3],['confidence',2],['evidence',3],['elapsed',12],['day',12],['reason',3]];
+  const day0 = Date.UTC(2024, 0, 1);
+  const maxElapsed = 4095;
+
+  function checksum(value) {
+    return Number((value ^ (value>>7n) ^ (value>>17n) ^ (value>>29n)) & 31n);
+  }
+
+  function encode(record) {
+    let value = 0n;
+    for (const [key, bits] of schema) {
+      const n = record[key];
+      if (!Number.isInteger(n) || n < 0 || n >= 2**bits) throw Error('数据超出编码范围');
+      value = (value << BigInt(bits)) | BigInt(n);
+    }
+    value = (value << 5n) | BigInt(checksum(value));
+    let code = '';
+    for (let i = 0; i < 10; i++) {
+      code = String.fromCharCode(65 + Number(value % 26n)) + code;
+      value /= 26n;
+    }
+    return code;
+  }
+
+  function decode(code) {
+    if (!/^[A-Z]{10}$/.test(code)) throw Error('请输入恰好十个英文字母。');
+    let value = 0n;
+    for (const char of code) value = value * 26n + BigInt(char.charCodeAt(0) - 65);
+    if (value >= 2n**47n) throw Error('无效代码。');
+    const check = Number(value & 31n);
+    value >>= 5n;
+    if (checksum(value) !== check) throw Error('代码校验未通过，请核对字母。');
+    const out = {};
+    for (const [key, bits] of [...schema].reverse()) {
+      out[key] = Number(value & ((1n << BigInt(bits)) - 1n));
+      value >>= BigInt(bits);
+    }
+    if (out.version >= 1 && out.version < edition) throw Error('这是旧题组的代码，请在对应的旧文件里查看。');
+    if (out.version !== edition || out.paper >= papers.length || out.runner >= labels.length
+        || out.answer === out.runner || out.confidence < 1 || out.confidence >= confidenceLabels.length
+        || out.evidence < 1 || out.evidence > papers[out.paper].paragraphs.length
+        || out.reason < 1 || out.reason >= reasonLabels.length) {
+      throw Error('不是本题组的有效代码。');
+    }
+    return out;
+  }
+
+  function localDay() {
+    const now = new Date();
+    return Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - day0) / 86400000);
+  }
+
+  function dateOf(n) {
+    return new Date(day0 + n*86400000).toISOString().slice(0,10);
+  }
+
+  function submit() {
+    if (submitted || startedAt === null) return;
+    const choice = $('input[name="answer"]:checked');
+    const runner = $('#runner').value;
+    const reason = $('#reason').value;
+    const evidence = $('#evidence').value;
+    const confidence = $('#confidence').value;
+    if (!choice || runner === '' || !reason || !evidence || !confidence) {
+      $('#formError').textContent = '请选出答案，并完成下面的判断记录。';
+      return;
+    }
+    if (Number(runner) === Number(choice.value)) {
+      $('#formError').textContent = '最犹豫的另一个选项不能与提交答案相同。';
+      return;
+    }
+    const day = localDay();
+    if (day < 0 || day > 4095) {
+      $('#formError').textContent = '设备日期超出可记录范围，请检查系统日期。';
+      return;
+    }
+    const elapsed = seconds();
+    const record = {
+      version:edition, paper:current, answer:Number(choice.value), runner:Number(runner),
+      confidence:Number(confidence), evidence:Number(evidence), elapsed:Math.min(maxElapsed,elapsed), day, reason:Number(reason)
+    };
+    const code = encode(record);
+    submitted = true;
+    clearInterval(tick);
+    $('#clock').textContent = formatTime(elapsed);
+    $('#submitBtn').disabled = true;
+    $('#formError').textContent = '';
+    $('#answerArea').querySelectorAll('input,select').forEach(input => { input.disabled = true; });
+    showFeedback(record, code);
+  }
+
+  function showFeedback(r, code) {
+    const p = papers[r.paper];
+    const box = $('#feedback');
+    const correct = r.answer === p.answer;
+    box.classList.remove('hidden');
+    box.append(el('div','verdict '+(correct?'good':'bad'),correct?'答对了：'+labels[p.answer]:'你选了 '+labels[r.answer]+'；最佳答案是 '+labels[p.answer]));
+    box.append(el('p',null,'用时：'+formatTime(r.elapsed)+(r.elapsed===maxElapsed?'（代码记录上限）':'')+' · 确定程度：'+confidenceLabels[r.confidence]+' · 另一个考虑的选项：'+labels[r.runner]));
+    box.append(el('h3',null,'全文中心与证据'), el('p',null,p.core), el('h3',null,'四个选项逐一核对'));
+    const options = el('ul');
+    p.explain.forEach(value => options.append(el('li',null,value)));
+    box.append(options, el('h3',null,'最接近的两项怎么分？'), el('p','method',p.compare), el('p',null,p.method));
+    box.append(el('h3',null,'影响判断的词句'));
+    p.language.forEach(value => box.append(el('p',null,value)));
+    const codebox = el('div','codebox');
+    codebox.append(el('div',null,'本篇十字母代码 · 发给老师'),el('div','code',code));
+    const copy = el('button','copy','复制代码');
+    copy.type = 'button';
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code);
+        copy.textContent = '已复制';
+      } catch {
+        copy.textContent = '请手动复制上方代码';
+      }
+    });
+    codebox.append(copy);
+    box.append(codebox);
+    box.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function lookup() {
+    const code = $('#codeInput').value.trim().toUpperCase().replace(/\s/g,'');
+    $('#lookupError').textContent = '';
+    const report = $('#report');
+    report.classList.add('hidden');
+    let r;
+    try { r = decode(code); }
+    catch (error) { $('#lookupError').textContent = error.message; return; }
+    const p = papers[r.paper];
+    const correct = r.answer === p.answer;
+    const reportRows = [
+      ['篇章', 'Set 2 · Passage '+(r.paper+1)+' / '+papers.length],
+      ['完成日期', dateOf(r.day)],
+      ['选定答案', labels[r.answer]+'. '+p.choices[r.answer]],
+      ['本题结果', correct?'正确':'错误（最佳答案：'+labels[p.answer]+'）'],
+      ['阅读与作答用时', formatTime(r.elapsed)+(r.elapsed===maxElapsed?'（代码记录上限；可能更长）':'')],
+      ['最犹豫的另一个选项', labels[r.runner]+'. '+p.choices[r.runner]],
+      ['学生标记的排除理由', reasonLabels[r.reason]],
+      ['最有帮助的段落', '['+r.evidence+']（自选，不计分）'],
+      ['确定程度', confidenceLabels[r.confidence]]
+    ];
+    report.replaceChildren(el('h2',null,'完成情况'));
+    const dl = el('dl');
+    reportRows.forEach(([key,value]) => dl.append(el('dt',null,key),el('dd',null,value)));
+    report.append(dl,el('h3',null,'教学核对'),el('p',null,p.core),el('p','method',p.compare));
+    report.append(el('h3',null,'课堂追问'),el('p',null,p.teacherPrompt));
+    report.classList.remove('hidden');
+  }
+
+  const annotation = (() => {
+    const art = $('#article');
+    const tools = $('#annotationTools');
+    const dialog = $('#noteDialog');
+    const noteList = $('#noteList');
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const storeKey = 'zoe-main-idea:'+edition+':annotations';
+    const tokenise = text => text.match(/\S+\s*/g) || [];
+    const wordCounts = papers.map(p => p.paragraphs.reduce((n,para) => n + tokenise(para).length, 0));
+    const undo = papers.map(() => []);
+    const instructions = {
+      read:'可正常滚动；点带蓝色点线的文字可打开批注。',
+      pen:'在正文上按住拖动，可自由划线或圈画。',
+      highlight:'从一个词拖到另一个词，给这段文字加高亮。',
+      note:'点一个词或拖选一段文字，添加批注。',
+      erase:'点一下笔迹或已标文字，擦掉最近的一处标记。'
+    };
+    let persistent = true;
+    let marks = papers.map(() => []);
+    try {
+      const payload = JSON.parse(window.localStorage.getItem(storeKey) || 'null');
+      if (Array.isArray(payload)) marks = papers.map((_,i) =>
+        Array.isArray(payload[i]) ? payload[i].filter(mark => validMark(mark, i)) : []);
+    } catch { persistent = false; }
+
+    let mode = 'read';
+    let ink = null;
+    let words = [];
+    let boxes = [];
+    let preview = [];
+    let gesture = null;
+    let draft = null;
+
+    function validMark(mark, paper) {
+      if (!mark || typeof mark !== 'object') return false;
+      if (mark.kind === 'pen') {
+        return Array.isArray(mark.points) && mark.points.length > 0 && mark.points.length <= 2400 &&
+          mark.points.every(p => Array.isArray(p) && p.length === 5 && p.every(Number.isFinite) &&
+            Number.isInteger(p[2]) && p[2] >= -1 && p[2] < wordCounts[paper]);
+      }
+      const range = Number.isInteger(mark.from) && Number.isInteger(mark.to) &&
+        mark.from >= 0 && mark.from <= mark.to && mark.to < wordCounts[paper];
+      return range && (mark.kind === 'highlight' ||
+        (mark.kind === 'note' && typeof mark.text === 'string' && mark.text.length <= 200));
+    }
+
+    function persist() {
+      try {
+        window.localStorage.setItem(storeKey, JSON.stringify(marks));
+        persistent = true;
+      } catch { persistent = false; }
+    }
+
+    function hint() {
+      const saved = persistent ? '标注留在此浏览器。' : '本浏览器未保存标注，关闭页面会丢失。';
+      const touch = mode !== 'read' && window.matchMedia('(pointer: coarse)').matches ?
+        '点「阅读」后可继续滑动。' : '';
+      $('#toolHint').textContent = instructions[mode] + touch + ' ' + saved;
+    }
+
+    function setMode(next) {
+      cancelGesture();
+      mode = next;
+      art.dataset.tool = next;
+      tools.querySelectorAll('button[data-tool]').forEach(button =>
+        button.setAttribute('aria-pressed', String(button.dataset.tool === next)));
+      if (next !== 'read') window.getSelection()?.removeAllRanges();
+      hint();
+    }
+
+    function reset() {
+      cancelGesture();
+      draft = null;
+      if (dialog.open) closeNote();
+      words = [];
+      boxes = [];
+      ink = null;
+      tools.classList.add('hidden');
+      noteList.classList.add('hidden');
+      noteList.replaceChildren();
+      art.classList.add('locked');
+      art.replaceChildren(el('p',null,'点击「开始阅读」，同时显示文章和题目。'));
+      setMode('read');
+    }
+
+    function openPassage(paper) {
+      words = [];
+      const passage = el('div','passage-text');
+      passage.lang = 'en';
+      paper.paragraphs.forEach((content,paraIndex) => {
+        const paragraph = el('p');
+        paragraph.append(el('span','num','['+(paraIndex+1)+']'));
+        tokenise(content).forEach(token => {
+          const word = el('span','word',token);
+          word.dataset.word = String(words.length);
+          word.dataset.para = String(paraIndex+1);
+          words.push(word);
+          paragraph.append(word);
+        });
+        passage.append(paragraph);
+      });
+      ink = document.createElementNS(svgNS,'svg');
+      ink.classList.add('ink-layer');
+      ink.setAttribute('aria-hidden','true');
+      ink.setAttribute('focusable','false');
+      art.classList.remove('locked');
+      art.replaceChildren(passage, ink);
+      tools.classList.remove('hidden');
+      setMode('read');
+      paint();
+    }
+
+    function geometry() {
+      if (!ink || !words.length) return false;
+      const outer = art.getBoundingClientRect();
+      if (!outer.width || !outer.height) return false;
+      ink.setAttribute('viewBox','0 0 '+outer.width+' '+outer.height);
+      boxes = words.map(word => {
+        const b = word.getBoundingClientRect();
+        return {x:b.left-outer.left, y:b.top-outer.top, w:b.width, h:b.height};
+      });
+      return true;
+    }
+
+    function nearest(point, maxDistance=Infinity) {
+      let best = -1;
+      let bestDistance = maxDistance*maxDistance;
+      for (let i = 0; i < boxes.length; i++) {
+        const b = boxes[i];
+        const dx = Math.max(0, b.x-point.x, point.x-b.x-b.w);
+        const dy = Math.max(0, b.y-point.y, point.y-b.y-b.h);
+        const distance = dx*dx + dy*dy;
+        if (distance < bestDistance) {
+          best = i;
+          bestDistance = distance;
+          if (distance === 0) break;
+        }
+      }
+      return best;
+    }
+
+    function eventPoint(event, clamp=false) {
+      const outer = art.getBoundingClientRect();
+      const x = event.clientX - outer.left, y = event.clientY - outer.top;
+      return !clamp ? {x,y} : {
+        x:Math.max(0,Math.min(outer.width,x)), y:Math.max(0,Math.min(outer.height,y))
+      };
+    }
+
+    function recordPoint(point) {
+      const i = nearest(point,80);
+      const b = boxes[i];
+      const round = n => Math.round(n*10)/10;
+      return [round(point.x),round(point.y),i,b?round(point.x-b.x):0,b?round(point.y-b.y):0];
+    }
+
+    // Anchor nearby ink samples to words so they follow the text if it wraps differently.
+    // Break a stroke where a resize moved its adjacent words to different lines.
+    function project(points) {
+      let previous;
+      return points.map(p => {
+        const b = boxes[p[2]];
+        const x = b ? b.x+p[3] : p[0];
+        const y = b ? b.y+p[4] : p[1];
+        const skip = !previous ||
+          Math.hypot((x-previous.x)-(p[0]-previous.rawX),(y-previous.y)-(p[1]-previous.rawY)) > 19;
+        previous = {x,y,rawX:p[0],rawY:p[1]};
+        return {x,y,skip};
+      });
+    }
+
+    function pathData(points) {
+      return project(points).map(p => {
+        const x = p.x.toFixed(1), y = p.y.toFixed(1);
+        return p.skip ? 'M'+x+' '+y+'l.06 0' : 'L'+x+' '+y;
+      }).join(' ');
+    }
+
+    function makeStroke(points) {
+      const path = document.createElementNS(svgNS,'path');
+      path.classList.add('ink-stroke');
+      path.setAttribute('d',pathData(points));
+      return path;
+    }
+
+    function paintInk() {
+      if (!geometry()) return;
+      ink.replaceChildren(...marks[current].filter(m => m.kind === 'pen').map(m => makeStroke(m.points)));
+      if (gesture?.kind === 'pen') {
+        gesture.path = makeStroke(gesture.points);
+        ink.append(gesture.path);
+      }
+    }
+
+    function paint() {
+      if (!ink) return;
+      const display = new Uint8Array(words.length);
+      const notes = [];
+      marks[current].forEach((mark,index) => {
+        if (mark.kind === 'pen') return;
+        for (let i = mark.from; i <= mark.to; i++) display[i] |= mark.kind === 'note' ? 2 : 1;
+        if (mark.kind === 'note') notes.push([mark,index]);
+      });
+      words.forEach((word,i) => {
+        word.classList.toggle('is-highlighted',Boolean(display[i]&1));
+        word.classList.toggle('is-noted',Boolean(display[i]&2));
+      });
+      noteList.replaceChildren();
+      noteList.classList.toggle('hidden',!notes.length);
+      if (notes.length) {
+        noteList.append(el('h2',null,'本篇批注 · '+notes.length+' 条'));
+        const list = el('ul');
+        notes.forEach(([mark,index]) => {
+          const item = el('li');
+          const button = el('button',null,'['+words[mark.from].dataset.para+'] '+mark.text);
+          button.type = 'button';
+          button.addEventListener('click',() => openNote(mark.from,mark.to,index));
+          item.append(button);
+          list.append(item);
+        });
+        noteList.append(list);
+      }
+      $('#undoAnnotation').disabled = !undo[current].length;
+      $('#clearAnnotations').disabled = !marks[current].length;
+      paintInk();
+      hint();
+    }
+
+    function revise(next) {
+      const history = undo[current];
+      history.push(marks[current]);
+      if (history.length > 50) history.shift();
+      marks[current] = next;
+      persist();
+      paint();
+    }
+
+    function undoMark() {
+      cancelGesture();
+      if (!ink || !undo[current].length) return;
+      marks[current] = undo[current].pop();
+      persist();
+      paint();
+    }
+
+    function clearPreview() {
+      preview.forEach(node => node.classList.remove('preview-highlight','preview-note'));
+      preview = [];
+    }
+
+    function rangePreview(kind, from, to) {
+      clearPreview();
+      preview = words.slice(Math.min(from,to),Math.max(from,to)+1);
+      preview.forEach(node => node.classList.add(kind === 'note'?'preview-note':'preview-highlight'));
+    }
+
+    function distanceToSegment(p,a,b) {
+      const dx=b.x-a.x, dy=b.y-a.y;
+      const len=dx*dx+dy*dy;
+      const t=len?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/len)):0;
+      return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy);
+    }
+
+    function eraseAt(point) {
+      const word = nearest(point,9);
+      const list = marks[current];
+      for (let i = list.length-1; i >= 0; i--) {
+        const m = list[i];
+        const hit = m.kind === 'pen' ? project(m.points).some((p,j,array) =>
+          distanceToSegment(point, p.skip?p:array[j-1], p) < 10) : word >= m.from && word <= m.to;
+        if (hit) {
+          revise(list.filter((_,j) => j !== i));
+          return;
+        }
+      }
+    }
+
+    function cancelGesture() {
+      if (gesture) {
+        const interrupted = gesture;
+        gesture = null;
+        interrupted.path?.remove();
+        if (art.hasPointerCapture?.(interrupted.id)) art.releasePointerCapture(interrupted.id);
+      }
+      clearPreview();
+    }
+
+    function onDown(event) {
+      if (mode === 'read' || gesture || dialog.open || !ink || event.isPrimary === false || event.button !== 0) return;
+      event.preventDefault();
+      if (!geometry()) return;
+      const point = eventPoint(event,mode==='pen');
+      if (mode === 'erase') { eraseAt(point); return; }
+      if (mode === 'pen') {
+        const points = [recordPoint(point)];
+        const path = makeStroke(points);
+        gesture = {id:event.pointerId, kind:'pen',points,path};
+        ink.append(path);
+      } else {
+        const index = nearest(point,26);
+        if (index < 0) return;
+        gesture = {id:event.pointerId,kind:mode,from:index,to:index};
+        rangePreview(mode,index,index);
+      }
+      try { art.setPointerCapture(event.pointerId); } catch { /* native capture is optional */ }
+    }
+
+    function onMove(event) {
+      if (!gesture || gesture.id !== event.pointerId) return;
+      const point = eventPoint(event,gesture.kind==='pen');
+      if (gesture.kind === 'pen') {
+        const last = gesture.points.at(-1);
+        if (gesture.points.length < 2400 && Math.hypot(point.x-last[0],point.y-last[1]) > 1.8) {
+          gesture.points.push(recordPoint(point));
+          gesture.path.setAttribute('d',pathData(gesture.points));
+        }
+      } else {
+        const index = nearest(point,36);
+        if (index >= 0 && index !== gesture.to) {
+          gesture.to = index;
+          rangePreview(gesture.kind,gesture.from,index);
+        }
+      }
+    }
+
+    function onUp(event) {
+      if (!gesture || gesture.id !== event.pointerId) return;
+      onMove(event);
+      const done = gesture;
+      gesture = null;
+      clearPreview();
+      if (done.kind === 'pen') {
+        revise([...marks[current],{kind:'pen',points:done.points}]);
+        return;
+      }
+      const from = Math.min(done.from,done.to), to = Math.max(done.from,done.to);
+      if (done.kind === 'note') openNote(from,to);
+      else revise([...marks[current],{kind:'highlight',from,to}]);
+    }
+
+    function openNote(from,to,index=null) {
+      if (dialog.open || !words[from]) return;
+      draft = {from,to,index};
+      const excerpt = words.slice(from,to+1).map(word => word.textContent.trim()).join(' ');
+      $('#noteExcerpt').textContent = '“'+excerpt.slice(0,185)+(excerpt.length>185?'…':'')+'”';
+      $('#noteText').value = index === null ? '' : marks[current][index].text;
+      rangePreview('note',from,to);
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open','');
+      $('#noteText').focus();
+    }
+
+    function closeNote() {
+      if (dialog.open && typeof dialog.close === 'function') dialog.close();
+      else dialog.removeAttribute('open');
+      draft = null;
+      clearPreview();
+    }
+
+    tools.querySelectorAll('button[data-tool]').forEach(button =>
+      button.addEventListener('click',() => setMode(button.dataset.tool)));
+    $('#undoAnnotation').addEventListener('click',undoMark);
+    $('#clearAnnotations').addEventListener('click',() => {
+      if (ink && marks[current].length && confirm('清空本篇标注？可以立即撤销。')) revise([]);
+    });
+    art.addEventListener('pointerdown',onDown);
+    art.addEventListener('pointermove',onMove);
+    art.addEventListener('pointerup',onUp);
+    art.addEventListener('pointercancel',event => { if (gesture?.id === event.pointerId) cancelGesture(); });
+    art.addEventListener('lostpointercapture',event => { if (gesture?.id === event.pointerId) cancelGesture(); });
+    art.addEventListener('click',event => {
+      if (mode !== 'read' || window.getSelection()?.toString()) return;
+      const word = event.target.closest('.word.is-noted');
+      if (!word) return;
+      const i = Number(word.dataset.word);
+      const index = marks[current].findLastIndex(m => m.kind === 'note' && m.from <= i && i <= m.to);
+      if (index >= 0) openNote(marks[current][index].from,marks[current][index].to,index);
+    });
+    $('#cancelNote').addEventListener('click',closeNote);
+    $('#noteForm').addEventListener('submit',event => {
+      event.preventDefault();
+      const value = $('#noteText').value.trim();
+      if (!draft || !value) return;
+      const next = marks[current].slice();
+      const mark = {kind:'note',from:draft.from,to:draft.to,text:value};
+      if (draft.index === null) next.push(mark);
+      else next[draft.index] = mark;
+      closeNote();
+      revise(next);
+    });
+    dialog.addEventListener('cancel',event => {
+      event.preventDefault();
+      closeNote();
+    });
+    document.addEventListener('keydown',event => {
+      if (event.key === 'Escape' && !dialog.open && ink && !tools.classList.contains('hidden') && mode !== 'read') {
+        setMode('read');
+      }
+    });
+    if ('ResizeObserver' in window) new ResizeObserver(paintInk).observe(art);
+    else window.addEventListener('resize',paintInk);
+    return {openPassage,reset};
+  })();
+
+  $('#startBtn').addEventListener('click',start);
+  $('#submitBtn').addEventListener('click',submit);
+  $('#lookupBtn').addEventListener('click',lookup);
+  $('#codeInput').addEventListener('keydown',event => { if (event.key === 'Enter') lookup(); });
+  document.querySelectorAll('.nav button').forEach(button => button.addEventListener('click',() => {
+    const key = button.dataset.go;
+    if (button.classList.contains('active')) return;
+    if (startedAt !== null && !submitted && !confirm('切换页面会结束本次计时和未提交作答。已保存的标注保留。继续吗？')) return;
+    if (key !== 'teacher') { render(Number(key)); return; }
+    clearInterval(tick);
+    startedAt = null;
+    annotation.reset();
+    $('#studentView').classList.add('hidden');
+    $('#intro').classList.add('hidden');
+    $('#portal').classList.remove('hidden');
+    activateNav('teacher');
+    window.scrollTo(0,0);
+  }));
+  render(0);
+  </script>
+</body>
+</html>
